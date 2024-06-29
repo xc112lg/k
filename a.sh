@@ -25,10 +25,9 @@ if ! check_libdebuginfod; then
         echo "Attempting to download and build elfutils from source..."
 
         # Install necessary build dependencies
-        sudo apt-get install -y build-essential autoconf automake libtool pkg-config wget bzip2 \
-            libcurl4-openssl-dev libdw-dev libmicrohttpd-dev
+        sudo apt-get install -y build-essential autoconf automake libtool pkg-config wget bzip2
 
-        # Download and build elfutils from source
+        # Download and build elfutils from source with debuginfod disabled
         ELFUTILS_VERSION="0.186"
         ELFUTILS_TAR="elfutils-${ELFUTILS_VERSION}.tar.bz2"
         ELFUTILS_DIR="elfutils-${ELFUTILS_VERSION}"
@@ -46,7 +45,7 @@ if ! check_libdebuginfod; then
         fi
 
         cd "${ELFUTILS_DIR}"
-        ./configure
+        ./configure --disable-debuginfod
         if [ $? -ne 0 ]; then
             echo "Failed to configure elfutils."
             exit 1
@@ -101,6 +100,7 @@ else
 fi
 
 echo "All steps completed successfully."
+
 
 
 
