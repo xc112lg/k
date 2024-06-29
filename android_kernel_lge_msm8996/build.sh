@@ -68,6 +68,7 @@
 ################################# CONFIG #################################
 
 # Assume build_all is not being used, will be automatically changed if it is
+echo -j$(nproc --all)
 SINGLEBUILD="yes"
 
 # root directory of this kernel (this script's location)
