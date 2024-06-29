@@ -193,6 +193,7 @@ along with GCC; see the file COPYING3.  If not see
   NEXT_PASS (pass_omp_device_lower);
   NEXT_PASS (pass_omp_target_link);
   NEXT_PASS (pass_adjust_alignment);
+  NEXT_PASS (pass_harden_control_flow_redundancy);
   NEXT_PASS (pass_all_optimizations);
   PUSH_INSERT_PASSES_WITHIN (pass_all_optimizations)
       NEXT_PASS (pass_remove_cgraph_callee_edges);
@@ -221,7 +222,7 @@ along with GCC; see the file COPYING3.  If not see
       NEXT_PASS (pass_fre, true /* may_iterate */);
       NEXT_PASS (pass_merge_phi);
       NEXT_PASS (pass_thread_jumps_full, /*first=*/true);
-      NEXT_PASS (pass_vrp, true /* warn_array_bounds_p */);
+      NEXT_PASS (pass_vrp, false /* final_p*/);
       NEXT_PASS (pass_dse);
       NEXT_PASS (pass_dce);
       /* pass_stdarg is always run and at this point we execute
@@ -348,7 +349,7 @@ along with GCC; see the file COPYING3.  If not see
       NEXT_PASS (pass_dominator, false /* may_peel_loop_headers_p */);
       NEXT_PASS (pass_strlen);
       NEXT_PASS (pass_thread_jumps_full, /*first=*/false);
-      NEXT_PASS (pass_vrp, false /* warn_array_bounds_p */);
+      NEXT_PASS (pass_vrp, true /* final_p */);
       /* Run CCP to compute alignment and nonzero bits.  */
       NEXT_PASS (pass_ccp, true /* nonzero_p */);
       NEXT_PASS (pass_warn_restrict);
@@ -519,6 +520,7 @@ along with GCC; see the file COPYING3.  If not see
 	  NEXT_PASS (pass_peephole2);
 	  NEXT_PASS (pass_if_after_reload);
 	  NEXT_PASS (pass_regrename);
+	  NEXT_PASS (pass_fold_mem_offsets);
 	  NEXT_PASS (pass_cprop_hardreg);
 	  NEXT_PASS (pass_fast_rtl_dce);
 	  NEXT_PASS (pass_reorder_blocks);

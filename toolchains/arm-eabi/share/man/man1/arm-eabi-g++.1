@@ -55,7 +55,7 @@
 .\" ========================================================================
 .\"
 .IX Title "GCC 1"
-.TH GCC 1 2023-09-07 gcc-14.0.0 GNU
+.TH GCC 1 2023-10-29 gcc-14.0.0 GNU
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -181,7 +181,7 @@ in the following sections.
 \&\-fnew\-inheriting\-ctors
 \&\-fnew\-ttp\-matching
 \&\-fno\-nonansi\-builtins  \-fnothrow\-opt  \-fno\-operator\-names
-\&\-fno\-optional\-diags  \-fpermissive
+\&\-fno\-optional\-diags
 \&\-fno\-pretty\-templates
 \&\-fno\-rtti  \-fsized\-deallocation
 \&\-ftemplate\-backtrace\-limit=\fR\fIn\fR
@@ -269,7 +269,7 @@ in the following sections.
 .IP "\fIWarning Options\fR" 4
 .IX Item "Warning Options"
 \&\fB\-fsyntax\-only  \-fmax\-errors=\fR\fIn\fR  \fB\-Wpedantic
-\&\-pedantic\-errors
+\&\-pedantic\-errors \-fpermissive
 \&\-w  \-Wextra  \-Wall  \-Wabi=\fR\fIn\fR
 \&\fB\-Waddress  \-Wno\-address\-of\-packed\-member  \-Waggregate\-return
 \&\-Walloc\-size\-larger\-than=\fR\fIbyte-size\fR  \fB\-Walloc\-zero
@@ -485,6 +485,7 @@ in the following sections.
 \&\-fauto\-inc\-dec  \-fbranch\-probabilities
 \&\-fcaller\-saves
 \&\-fcombine\-stack\-adjustments  \-fconserve\-stack
+\&\-ffold\-mem\-offsets
 \&\-fcompare\-elim  \-fcprop\-registers  \-fcrossjumping
 \&\-fcse\-follow\-jumps  \-fcse\-skip\-blocks  \-fcx\-fortran\-rules
 \&\-fcx\-limited\-range
@@ -582,7 +583,10 @@ in the following sections.
 \&\-fsanitize\-undefined\-trap\-on\-error  \-fbounds\-check
 \&\-fcf\-protection=\fR[\fBfull\fR|\fBbranch\fR|\fBreturn\fR|\fBnone\fR|\fBcheck\fR]
 \&\fB\-fharden\-compares \-fharden\-conditional\-branches
-\&\-fstack\-protector  \-fstack\-protector\-all  \-fstack\-protector\-strong
+\&\-fharden\-control\-flow\-redundancy  \-fhardcfr\-skip\-leaf
+\&\-fhardcfr\-check\-exceptions  \-fhardcfr\-check\-returning\-calls
+\&\-fhardcfr\-check\-noreturn\-calls=\fR[\fBalways\fR|\fBno-xthrow\fR|\fBnothrow\fR|\fBnever\fR]
+\&\fB\-fstack\-protector  \-fstack\-protector\-all  \-fstack\-protector\-strong
 \&\-fstack\-protector\-explicit  \-fstack\-check
 \&\-fstack\-limit\-register=\fR\fIreg\fR  \fB\-fstack\-limit\-symbol=\fR\fIsym\fR
 \&\fB\-fno\-stack\-limit  \-fsplit\-stack
@@ -650,7 +654,8 @@ in the following sections.
 \&\-fverbose\-asm  \-fpack\-struct[=\fR\fIn\fR\fB]
 \&\-fleading\-underscore  \-ftls\-model=\fR\fImodel\fR
 \&\fB\-fstack\-reuse=\fR\fIreuse_level\fR
-\&\fB\-ftrampolines  \-ftrapv  \-fwrapv
+\&\fB\-ftrampolines \-ftrampoline\-impl=\fR[\fBstack\fR|\fBheap\fR]
+\&\fB\-ftrapv  \-fwrapv
 \&\-fvisibility=\fR[\fBdefault\fR|\fBinternal\fR|\fBhidden\fR|\fBprotected\fR]
 \&\fB\-fstrict\-volatile\-bitfields  \-fsync\-libcalls\fR
 .IP "\fIDeveloper Options\fR" 4
@@ -851,7 +856,7 @@ in the following sections.
 \&\-iframework
 \&\-image_base  \-init  \-install_name  \-keep_private_externs
 \&\-multi_module  \-multiply_defined  \-multiply_defined_unused
-\&\-noall_load   \-no_dead_strip_inits_and_terms
+\&\-noall_load   \-no_dead_strip_inits_and_terms \-nodefaultrpaths
 \&\-nofixprebinding  \-nomultidefs  \-noprebind  \-noseglinkedit
 \&\-pagezero_size  \-prebind  \-prebind_all_twolevel_modules
 \&\-private_bundle  \-read_only_relocs  \-sectalign
@@ -967,7 +972,7 @@ in the following sections.
 \&\-mcond\-move\-float  \-mno\-cond\-move\-float
 \&\-memcpy  \-mno\-memcpy \-mstrict\-align \-mno\-strict\-align
 \&\-mmax\-inline\-memcpy\-size=\fR\fIn\fR
-\&\fB\-mexplicit\-relocs \-mno\-explicit\-relocs
+\&\fB\-mexplicit\-relocs=\fR\fIstyle\fR \fB\-mexplicit\-relocs \-mno\-explicit\-relocs
 \&\-mdirect\-extern\-access \-mno\-direct\-extern\-access
 \&\-mcmodel=\fR\fIcode-model\fR
 .Sp
@@ -1166,7 +1171,10 @@ See RS/6000 and PowerPC Options.
 \&\-mstack\-protector\-guard=\fR\fIguard\fR  \fB\-mstack\-protector\-guard\-reg=\fR\fIreg\fR
 \&\fB\-mstack\-protector\-guard\-offset=\fR\fIoffset\fR
 \&\fB\-mcsr\-check \-mno\-csr\-check
-\&\-minline\-atomics  \-mno\-inline\-atomics\fR
+\&\-minline\-atomics  \-mno\-inline\-atomics
+\&\-minline\-strlen  \-mno\-inline\-strlen
+\&\-minline\-strcmp  \-mno\-inline\-strcmp
+\&\-minline\-strncmp  \-mno\-inline\-strncmp\fR
 .Sp
 \&\fIRL78 Options\fR
 \&\fB\-msim  \-mmul=none  \-mmul=g13  \-mmul=g14  \-mallregs
@@ -1370,7 +1378,8 @@ See RS/6000 and PowerPC Options.
 \&\-mrdseed  \-msgx \-mavx512vp2intersect \-mserialize \-mtsxldtrk
 \&\-mamx\-tile  \-mamx\-int8  \-mamx\-bf16 \-muintr \-mhreset \-mavxvnni
 \&\-mavx512fp16 \-mavxifma \-mavxvnniint8 \-mavxneconvert \-mcmpccxadd \-mamx\-fp16
-\&\-mprefetchi \-mraoint \-mamx\-complex \-mavxvnniint16 \-msm3 \-msha512 \-msm4
+\&\-mprefetchi \-mraoint \-mamx\-complex \-mavxvnniint16 \-msm3 \-msha512 \-msm4 \-mapxf
+\&\-musermsr
 \&\-mcldemote  \-mms\-bitfields  \-mno\-align\-stringops  \-minline\-all\-stringops
 \&\-minline\-stringops\-dynamically  \-mstringop\-strategy=\fR\fIalg\fR
 \&\fB\-mkl \-mwidekl
@@ -2705,9 +2714,10 @@ Typical command lines are
 .Ve
 .IP \fB\-fopenacc\fR 4
 .IX Item "-fopenacc"
-Enable handling of OpenACC directives \f(CW\*(C`#pragma acc\*(C'\fR in C/C++ and
-\&\f(CW\*(C`!$acc\*(C'\fR in Fortran.  When \fB\-fopenacc\fR is specified, the
-compiler generates accelerated code according to the OpenACC Application
+Enable handling of OpenACC directives \fB#pragma acc\fR in C/C++ and
+\&\fB!$acc\fR in free-form Fortran and \fB!$acc\fR, \fBc$acc\fR and
+\&\fB*$acc\fR in fixed-form Fortran.  When \fB\-fopenacc\fR is specified,
+the compiler generates accelerated code according to the OpenACC Application
 Programming Interface v2.6 <\fBhttps://www.openacc.org\fR>.  This option
 implies \fB\-pthread\fR, and thus is only supported on targets that
 have support for \fB\-pthread\fR.
@@ -2719,9 +2729,12 @@ not explicitly specify.  The \fIgeom\fR value is a triple of
 can be omitted, to use a target-specific default value.
 .IP \fB\-fopenmp\fR 4
 .IX Item "-fopenmp"
-Enable handling of OpenMP directives \f(CW\*(C`#pragma omp\*(C'\fR in C/C++,
-\&\f(CW\*(C`[[omp::directive(...)]]\*(C'\fR and \f(CW\*(C`[[omp::sequence(...)]]\*(C'\fR in C++ and
-\&\f(CW\*(C`!$omp\*(C'\fR in Fortran.  When \fB\-fopenmp\fR is specified, the
+Enable handling of OpenMP directives \fB#pragma omp\fR in C/C++,
+\&\fB[[omp::directive(...)]]\fR, \fB[[omp::sequence(...)]]\fR and
+\&\fB[[omp::decl(...)]]\fR in C++ and \fB!$omp\fR in Fortran.  It
+additionally enables the conditional compilation sentinel \fB!$\fR in
+Fortran.  In fixed source form Fortran, the sentinels can also start with
+\&\fBc\fR or \fB*\fR.  When \fB\-fopenmp\fR is specified, the
 compiler generates parallel code according to the OpenMP Application
 Program Interface v4.5 <\fBhttps://www.openmp.org\fR>.  This option
 implies \fB\-pthread\fR, and thus is only supported on targets that
@@ -2730,11 +2743,16 @@ have support for \fB\-pthread\fR. \fB\-fopenmp\fR implies
 .IP \fB\-fopenmp\-simd\fR 4
 .IX Item "-fopenmp-simd"
 Enable handling of OpenMP's \f(CW\*(C`simd\*(C'\fR, \f(CW\*(C`declare simd\*(C'\fR,
-\&\f(CW\*(C`declare reduction\*(C'\fR, \f(CW\*(C`assume\*(C'\fR, \f(CW\*(C`ordered\*(C'\fR, \f(CW\*(C`scan\*(C'\fR,
-\&\f(CW\*(C`loop\*(C'\fR directives and combined or composite directives with
+\&\f(CW\*(C`declare reduction\*(C'\fR, \f(CW\*(C`assume\*(C'\fR, \f(CW\*(C`ordered\*(C'\fR, \f(CW\*(C`scan\*(C'\fR
+and \f(CW\*(C`loop\*(C'\fR directive, and of combined or composite directives with
 \&\f(CW\*(C`simd\*(C'\fR as constituent with \f(CW\*(C`#pragma omp\*(C'\fR in C/C++,
-\&\f(CW\*(C`[[omp::directive(...)]]\*(C'\fR and \f(CW\*(C`[[omp::sequence(...)]]\*(C'\fR in C++
-and \f(CW\*(C`!$omp\*(C'\fR in Fortran.  Other OpenMP directives are ignored.
+\&\f(CW\*(C`[[omp::directive(...)]]\*(C'\fR, \f(CW\*(C`[[omp::sequence(...)]]\*(C'\fR and
+\&\f(CW\*(C`[[omp::decl(...)]]\*(C'\fR in C++ and \f(CW\*(C`!$omp\*(C'\fR in Fortran.  It
+additionally enables the conditional compilation sentinel \fB!$\fR in
+Fortran.  In fixed source form Fortran, the sentinels can also start with
+\&\fBc\fR or \fB*\fR.  Other OpenMP directives are ignored.  Unless
+\&\fB\-fopenmp\fR is additionally specified, the \f(CW\*(C`loop\*(C'\fR region binds
+to the current task region, independent of the specified \f(CW\*(C`bind\*(C'\fR clause.
 .IP \fB\-fopenmp\-target\-simd\-clone\fR 4
 .IX Item "-fopenmp-target-simd-clone"
 .PD 0
@@ -2778,6 +2796,29 @@ The default when in a standards compliant mode (\fB\-std=c11\fR or similar)
 is \fB\-fpermitted\-flt\-eval\-methods=c11\fR.  The default when in a GNU
 dialect (\fB\-std=gnu11\fR or similar) is
 \&\fB\-fpermitted\-flt\-eval\-methods=ts\-18661\-3\fR.
+.Sp
+The \fB\-fdeps\-*\fR options are used to extract structured dependency
+information for a source.  This involves determining what resources provided by
+other source files will be required to compile the source as well as what
+resources are provided by the source.  This information can be used to add
+required dependencies between compilation rules of dependent sources based on
+their contents rather than requiring such information be reflected within the
+build tools as well.
+.IP \fB\-fdeps\-file=\fR\fIfile\fR 4
+.IX Item "-fdeps-file=file"
+Where to write structured dependency information.
+.IP \fB\-fdeps\-format=\fR\fIformat\fR 4
+.IX Item "-fdeps-format=format"
+The format to use for structured dependency information. \fBp1689r5\fR is the
+only supported format right now.  Note that when this argument is specified, the
+output of \fB\-MF\fR is stripped of some information (namely C++ modules) so
+that it does not use extended makefile syntax not understood by most tools.
+.IP \fB\-fdeps\-target=\fR\fIfile\fR 4
+.IX Item "-fdeps-target=file"
+Analogous to \fB\-MT\fR but for structured dependency information.  This
+indicates the target which will ultimately need any required resources and
+provide any resources extracted from the source that may be required by other
+sources.
 .IP \fB\-fplan9\-extensions\fR 4
 .IX Item "-fplan9-extensions"
 Accept some non-standard constructs used in Plan 9 code.
@@ -3374,11 +3415,6 @@ synonyms as keywords.
 Disable diagnostics that the standard says a compiler does not need to
 issue.  Currently, the only such diagnostic issued by G++ is the one for
 a name having multiple meanings within a class.
-.IP \fB\-fpermissive\fR 4
-.IX Item "-fpermissive"
-Downgrade some diagnostics about nonconformant code from errors to
-warnings.  Thus, using \fB\-fpermissive\fR allows some
-nonconforming code to compile.
 .IP \fB\-fno\-pretty\-templates\fR 4
 .IX Item "-fno-pretty-templates"
 When an error message refers to a specialization of a function
@@ -5352,7 +5388,8 @@ value further adds the possibility of emoji in the output (such as emitting
 U+26A0 WARNING SIGN followed by U+FE0F VARIATION SELECTOR\-16 to select the
 emoji variant of the character).
 .Sp
-The default is \fBemoji\fR.
+The default is \fBemoji\fR, except when the environment variable \fBLANG\fR
+is set to \fBC\fR, in which case the default is \fBascii\fR.
 .IP \fB\-fdiagnostics\-format=\fR\fIFORMAT\fR 4
 .IX Item "-fdiagnostics-format=FORMAT"
 Select a different format for printing diagnostics.
@@ -5795,6 +5832,15 @@ errors by \fB\-pedantic\-errors\fR.  For instance:
 \&\-Wregister\fR (C++17 or later)
 \&\fB\-Wvla\fR (C90 or earlier)
 \&\fB\-Wwrite\-strings\fR (C++11 or later)\fB \fR
+.IP \fB\-fpermissive\fR 4
+.IX Item "-fpermissive"
+Downgrade some required diagnostics about nonconformant code from
+errors to warnings.  Thus, using \fB\-fpermissive\fR allows some
+nonconforming code to compile.  Some C++ diagnostics are controlled
+only by this flag, but it also downgrades some diagnostics that have
+their own flag:
+.Sp
+\&\fB\-Wnarrowing\fR (C++)\fB \fR
 .IP \fB\-Wall\fR 4
 .IX Item "-Wall"
 This enables all the warnings about constructions that some users
@@ -13370,6 +13416,15 @@ This pass only applies to certain targets that cannot explicitly represent
 the comparison operation before register allocation is complete.
 .Sp
 Enabled at levels \fB\-O1\fR, \fB\-O2\fR, \fB\-O3\fR, \fB\-Os\fR.
+.IP \fB\-ffold\-mem\-offsets\fR 4
+.IX Item "-ffold-mem-offsets"
+.PD 0
+.IP \fB\-fno\-fold\-mem\-offsets\fR 4
+.IX Item "-fno-fold-mem-offsets"
+.PD
+Try to eliminate add instructions by folding them in memory loads/stores.
+.Sp
+Enabled at levels \fB\-O2\fR, \fB\-O3\fR.
 .IP \fB\-fcprop\-registers\fR 4
 .IX Item "-fcprop-registers"
 After register allocation and post-register allocation instruction splitting,
@@ -14891,6 +14946,16 @@ number of parameters in a Static Control Part (SCoP) is bounded.
 A value of zero can be used to lift
 the bound.  A variable whose value is unknown at compilation time and
 defined outside a SCoP is a parameter of the SCoP.
+.IP \fBhardcfr-max-blocks\fR 4
+.IX Item "hardcfr-max-blocks"
+Disable \fB\-fharden\-control\-flow\-redundancy\fR for functions with a
+larger number of blocks than the specified value.  Zero removes any
+limit.
+.IP \fBhardcfr-max-inline-blocks\fR 4
+.IX Item "hardcfr-max-inline-blocks"
+Force \fB\-fharden\-control\-flow\-redundancy\fR to use out-of-line
+checking for functions with a larger number of basic blocks than the
+specified value.
 .IP \fBloop-block-tile-size\fR 4
 .IX Item "loop-block-tile-size"
 Loop blocking or strip mining transforms, enabled with
@@ -15300,6 +15365,13 @@ crossing a loop backedge when comparing to
 .IX Item "uninit-control-dep-attempts"
 Maximum number of nested calls to search for control dependencies
 during uninitialized variable analysis.
+.IP \fBuninit-max-chain-len\fR 4
+.IX Item "uninit-max-chain-len"
+Maximum number of predicates anded for each predicate ored in the normalized
+predicate chain.
+.IP \fBuninit-max-num-chains\fR 4
+.IX Item "uninit-max-num-chains"
+Maximum number of predicates ored in the normalized predicate chain.
 .IP \fBsched-autopref-queue-depth\fR 4
 .IX Item "sched-autopref-queue-depth"
 Hardware autoprefetcher scheduler model control flag.
@@ -15460,6 +15532,26 @@ Use both Advanced SIMD and SVE.  Prefer SVE when the costs are deemed equal.
 .Sp
 The default value is 0.
 .RE
+.IP \fBaarch64\-ldp\-policy\fR 4
+.IX Item "aarch64-ldp-policy"
+Fine-grained policy for load pairs.
+With \fB\-\-param=aarch64\-ldp\-policy=default\fR, use the policy of the
+tuning structure.  This is the current default.
+With \fB\-\-param=aarch64\-ldp\-policy=always\fR, emit ldp regardless
+of alignment.
+With \fB\-\-param=aarch64\-ldp\-policy=never\fR, do not emit ldp.
+With \fB\-\-param=aarch64\-ldp\-policy=aligned\fR, emit ldp only if the
+source pointer is aligned to at least double the alignment of the type.
+.IP \fBaarch64\-stp\-policy\fR 4
+.IX Item "aarch64-stp-policy"
+Fine-grained policy for store pairs.
+With \fB\-\-param=aarch64\-stp\-policy=default\fR, use the policy of the
+tuning structure.  This is the current default.
+With \fB\-\-param=aarch64\-stp\-policy=always\fR, emit stp regardless
+of alignment.
+With \fB\-\-param=aarch64\-stp\-policy=never\fR, do not emit stp.
+With \fB\-\-param=aarch64\-stp\-policy=aligned\fR, emit stp only if the
+source pointer is aligned to at least double the alignment of the type.
 .IP \fBaarch64\-loop\-vect\-issue\-rate\-niters\fR 4
 .IX Item "aarch64-loop-vect-issue-rate-niters"
 The tuning for some AArch64 CPUs tries to take both latencies and issue
@@ -16259,6 +16351,79 @@ optimizations, emit extra code to compute and verify the reversed
 condition, and to call \f(CW\*(C`_\|_builtin_trap\*(C'\fR if the result is
 unexpected.  Use with \fB\-fharden\-compares\fR to cover all
 conditionals.
+.IP \fB\-fharden\-control\-flow\-redundancy\fR 4
+.IX Item "-fharden-control-flow-redundancy"
+Emit extra code to set booleans when entering basic blocks, and to
+verify and trap, at function exits, when the booleans do not form an
+execution path that is compatible with the control flow graph.
+.Sp
+Verification takes place before returns, before mandatory tail calls
+(see below) and, optionally, before escaping exceptions with
+\&\fB\-fhardcfr\-check\-exceptions\fR, before returning calls with
+\&\fB\-fhardcfr\-check\-returning\-calls\fR, and before noreturn calls with
+\&\fB\-fhardcfr\-check\-noreturn\-calls\fR).  Tuning options
+\&\fB\-\-param hardcfr-max-blocks\fR and \fB\-\-param
+hardcfr-max-inline-blocks\fR are available.
+.Sp
+Tail call optimization takes place too late to affect control flow
+redundancy, but calls annotated as mandatory tail calls by language
+front-ends, and any calls marked early enough as potential tail calls
+would also have verification issued before the call, but these
+possibilities are merely theoretical, as these conditions can only be
+met when using custom compiler plugins.
+.IP \fB\-fhardcfr\-skip\-leaf\fR 4
+.IX Item "-fhardcfr-skip-leaf"
+Disable \fB\-fharden\-control\-flow\-redundancy\fR in leaf functions.
+.IP \fB\-fhardcfr\-check\-exceptions\fR 4
+.IX Item "-fhardcfr-check-exceptions"
+When \fB\-fharden\-control\-flow\-redundancy\fR is active, check the
+recorded execution path against the control flow graph at exception
+escape points, as if the function body was wrapped with a cleanup
+handler that performed the check and reraised.  This option is enabled
+by default; use \fB\-fno\-hardcfr\-check\-exceptions\fR to disable it.
+.IP \fB\-fhardcfr\-check\-returning\-calls\fR 4
+.IX Item "-fhardcfr-check-returning-calls"
+When \fB\-fharden\-control\-flow\-redundancy\fR is active, check the
+recorded execution path against the control flow graph before any
+function call immediately followed by a return of its result, if any, so
+as to not prevent tail-call optimization, whether or not it is
+ultimately optimized to a tail call.
+.Sp
+This option is enabled by default whenever sibling call optimizations
+are enabled (see \fB\-foptimize\-sibling\-calls\fR), but it can be
+enabled (or disabled, using its negated form) explicitly, regardless of
+the optimizations.
+.IP \fB\-fhardcfr\-check\-noreturn\-calls=\fR[\fBalways\fR|\fBno-xthrow\fR|\fBnothrow\fR|\fBnever\fR] 4
+.IX Item "-fhardcfr-check-noreturn-calls=[always|no-xthrow|nothrow|never]"
+When \fB\-fharden\-control\-flow\-redundancy\fR is active, check the
+recorded execution path against the control flow graph before
+\&\f(CW\*(C`noreturn\*(C'\fR calls, either all of them (\fBalways\fR), those that
+aren't expected to return control to the caller through an exception
+(\fBno-xthrow\fR, the default), those that may not return control to
+the caller through an exception either (\fBnothrow\fR), or none of
+them (\fBnever\fR).
+.Sp
+Checking before a \f(CW\*(C`noreturn\*(C'\fR function that may return control to
+the caller through an exception may cause checking to be performed more
+than once, if the exception is caught in the caller, whether by a
+handler or a cleanup.  When \fB\-fhardcfr\-check\-exceptions\fR is also
+enabled, the compiler will avoid associating a \f(CW\*(C`noreturn\*(C'\fR call with
+the implicitly-added cleanup handler, since it would be redundant with
+the check performed before the call, but other handlers or cleanups in
+the function, if activated, will modify the recorded execution path and
+check it again when another checkpoint is hit.  The checkpoint may even
+be another \f(CW\*(C`noreturn\*(C'\fR call, so checking may end up performed
+multiple times.
+.Sp
+Various optimizers may cause calls to be marked as \f(CW\*(C`noreturn\*(C'\fR
+and/or \f(CW\*(C`nothrow\*(C'\fR, even in the absence of the corresponding
+attributes, which may affect the placement of checks before calls, as
+well as the addition of implicit cleanup handlers for them.  This
+unpredictability, and the fact that raising and reraising exceptions
+frequently amounts to implicitly calling \f(CW\*(C`noreturn\*(C'\fR functions, have
+made \fBno-xthrow\fR the default setting for this option: it excludes
+from the \f(CW\*(C`noreturn\*(C'\fR treatment only internal functions used to
+(re)raise exceptions, that are not affected by these optimizations.
 .IP \fB\-fstack\-protector\fR 4
 .IX Item "-fstack-protector"
 Emit extra code to check for buffer overflows, such as stack smashing
@@ -18196,6 +18361,19 @@ For languages other than Ada, the \f(CW\*(C`\-ftrampolines\*(C'\fR and
 \&\f(CW\*(C`\-fno\-trampolines\*(C'\fR options currently have no effect, and
 trampolines are always generated on platforms that need them
 for nested functions.
+.IP \fB\-ftrampoline\-impl=\fR[\fBstack\fR|\fBheap\fR] 4
+.IX Item "-ftrampoline-impl=[stack|heap]"
+By default, trampolines are generated on stack.  However, certain platforms
+(such as the Apple M1) do not permit an executable stack.  Compiling with
+\&\fB\-ftrampoline\-impl=heap\fR generate calls to
+\&\f(CW\*(C`_\|_builtin_nested_func_ptr_created\*(C'\fR and
+\&\f(CW\*(C`_\|_builtin_nested_func_ptr_deleted\*(C'\fR in order to allocate and
+deallocate trampoline space on the executable heap.  These functions are
+implemented in libgcc, and will only be provided on specific targets:
+x86_64 Darwin, x86_64 and aarch64 Linux.  \fIPLEASE NOTE\fR: Heap
+trampolines are \fInot\fR guaranteed to be correctly deallocated if you
+\&\f(CW\*(C`setjmp\*(C'\fR, instantiate nested functions, and then \f(CW\*(C`longjmp\*(C'\fR back
+to a state prior to having allocated those nested functions.
 .IP \fB\-fvisibility=\fR[\fBdefault\fR|\fBinternal\fR|\fBhidden\fR|\fBprotected\fR] 4
 .IX Item "-fvisibility=[default|internal|hidden|protected]"
 Set the default ELF image symbol visibility to the specified option\-\-\-all
@@ -19787,9 +19965,9 @@ performance of the code.  Permissible values for this option are:
 \&\fBcortex\-a73.cortex\-a35\fR, \fBcortex\-a73.cortex\-a53\fR,
 \&\fBcortex\-a75.cortex\-a55\fR, \fBcortex\-a76.cortex\-a55\fR,
 \&\fBcortex\-r82\fR, \fBcortex\-x1\fR, \fBcortex\-x1c\fR, \fBcortex\-x2\fR,
-\&\fBcortex\-x3\fR, \fBcortex\-a510\fR, \fBcortex\-a520\fR, \fBcortex\-a710\fR,
-\&\fBcortex\-a715\fR, \fBcortex\-a720\fR, \fBampere1\fR, \fBampere1a\fR,
-and \fBnative\fR.
+\&\fBcortex\-x3\fR, \fBcortex\-x4\fR, \fBcortex\-a510\fR, \fBcortex\-a520\fR,
+\&\fBcortex\-a710\fR, \fBcortex\-a715\fR, \fBcortex\-a720\fR, \fBampere1\fR,
+\&\fBampere1a\fR, and \fBnative\fR.
 .Sp
 The values \fBcortex\-a57.cortex\-a53\fR, \fBcortex\-a72.cortex\-a53\fR,
 \&\fBcortex\-a73.cortex\-a35\fR, \fBcortex\-a73.cortex\-a53\fR,
@@ -20238,7 +20416,9 @@ are
 .RS 4
 .IP \fBfiji\fR 4
 .IX Item "fiji"
-Compile for GCN3 Fiji devices (gfx803).
+Compile for GCN3 Fiji devices (gfx803).  Support deprecated; availablility
+depends on how GCC has been configured, see \fB\-\-with\-arch\fR and
+\&\fB\-\-with\-multilib\-list\fR.
 .IP \fBgfx900\fR 4
 .IX Item "gfx900"
 Compile for GCN5 Vega 10 devices (gfx900).
@@ -20722,8 +20902,7 @@ The following options control how the assembly code is annotated:
 Annotate assembler instructions with estimated addresses.
 .IP \fB\-mannotate\-align\fR 4
 .IX Item "-mannotate-align"
-Explain what alignment considerations lead to the decision to make an
-instruction short or long.
+Does nothing.  Preserved for backward compatibility.
 .PP
 The following options are passed through to the linker:
 .IP \fB\-marclinux\fR 4
@@ -23545,6 +23724,13 @@ an executable when linking, using the Darwin \fIlibtool\fR command.
 .IX Item "-force_cpusubtype_ALL"
 This causes GCC's output file to have the \fBALL\fR subtype, instead of
 one controlled by the \fB\-mcpu\fR or \fB\-march\fR option.
+.IP \fB\-nodefaultrpaths\fR 4
+.IX Item "-nodefaultrpaths"
+Do not add default run paths for the compiler library directories to
+executables, modules or dynamic libraries. On macOS 10.5 and later,
+the embedded runpath is added by default unless the user adds
+\&\fB\-nodefaultrpaths\fR to the link line. Run paths are needed
+(and therefore enforced) to build on macOS version 10.11 or later.
 .IP "\fB\-allowable_client\fR  \fIclient_name\fR" 4
 .IX Item "-allowable_client client_name"
 .PD 0
@@ -25244,27 +25430,39 @@ The text segment and data segment must be within 2GB addressing space.
 .IX Item "extreme"
 .PD
 This mode does not limit the size of the code segment and data segment.
-The \fB\-mcmodel=extreme\fR option is incompatible with \fB\-fplt\fR and
-\&\fB\-mno\-explicit\-relocs\fR.
+The \fB\-mcmodel=extreme\fR option is incompatible with \fB\-fplt\fR,
+and it requires \fB\-mexplicit\-relocs=always\fR.
 .RE
 .RS 4
 .Sp
 The default code model is \f(CW\*(C`normal\*(C'\fR.
 .RE
-.IP \fB\-mexplicit\-relocs\fR 4
-.IX Item "-mexplicit-relocs"
-.PD 0
-.IP \fB\-mno\-explicit\-relocs\fR 4
-.IX Item "-mno-explicit-relocs"
-.PD
-Use or do not use assembler relocation operators when dealing with symbolic
+.IP \fB\-mexplicit\-relocs=\fR\fIstyle\fR 4
+.IX Item "-mexplicit-relocs=style"
+Set when to use assembler relocation operators when dealing with symbolic
 addresses.  The alternative is to use assembler macros instead, which may
-limit optimization.  The default value for the option is determined during
-GCC build-time by detecting corresponding assembler support:
-\&\f(CW\*(C`\-mexplicit\-relocs\*(C'\fR if said support is present,
-\&\f(CW\*(C`\-mno\-explicit\-relocs\*(C'\fR otherwise.  This option is mostly useful for
+limit instruction scheduling but allow linker relaxation.
+with \fB\-mexplicit\-relocs=none\fR the assembler macros are always used,
+with \fB\-mexplicit\-relocs=always\fR the assembler relocation operators
+are always used, with \fB\-mexplicit\-relocs=auto\fR the compiler will
+use the relocation operators where the linker relaxation is impossible to
+improve the code quality, and macros elsewhere.  The default
+value for the option is determined during GCC build-time by detecting
+corresponding assembler support:
+\&\fB\-mexplicit\-relocs=none\fR if the assembler does not support
+relocation operators at all,
+\&\fB\-mexplicit\-relocs=always\fR if the assembler supports relocation
+operators but does not support relaxation,
+\&\fB\-mexplicit\-relocs=auto\fR if the assembler supports both relocation
+operators and relaxation.  This option is mostly useful for
 debugging, or interoperation with assemblers different from the build-time
 one.
+.IP \fB\-mexplicit\-relocs\fR 4
+.IX Item "-mexplicit-relocs"
+An alias of \fB\-mexplicit\-relocs=always\fR for backward compatibility.
+.IP \fB\-mno\-explicit\-relocs\fR 4
+.IX Item "-mno-explicit-relocs"
+An alias of \fB\-mexplicit\-relocs=none\fR for backward compatibility.
 .IP \fB\-mdirect\-extern\-access\fR 4
 .IX Item "-mdirect-extern-access"
 .PD 0
@@ -25281,6 +25479,12 @@ environments where no dynamic link is performed, like firmwares, OS
 kernels, executables linked with \fB\-static\fR or \fB\-static\-pie\fR.
 \&\fB\-mdirect\-extern\-access\fR is not compatible with \fB\-fPIC\fR or
 \&\fB\-fpic\fR.
+.IP \fBloongarch-vect-unroll-limit\fR 4
+.IX Item "loongarch-vect-unroll-limit"
+The vectorizer will use available tuning information to determine whether it
+would be beneficial to unroll the main vectorized loop and by how much.  This
+parameter set's the upper bound of how much the vectorizer will unroll the main
+loop.  The default value is six.
 .PP
 \fIM32C Options\fR
 .IX Subsection "M32C Options"
@@ -28392,6 +28596,36 @@ epilogues.
 Do or don't use smaller but slower subword atomic emulation code that uses
 libatomic function calls.  The default is to use fast inline subword atomics
 that do not require libatomic.
+.IP \fB\-minline\-strlen\fR 4
+.IX Item "-minline-strlen"
+.PD 0
+.IP \fB\-mno\-inline\-strlen\fR 4
+.IX Item "-mno-inline-strlen"
+.PD
+Do or do not attempt to inline strlen calls if possible.
+Inlining will only be done if the string is properly aligned
+and instructions for accelerated processing are available.
+The default is to not inline strlen calls.
+.IP \fB\-minline\-strcmp\fR 4
+.IX Item "-minline-strcmp"
+.PD 0
+.IP \fB\-mno\-inline\-strcmp\fR 4
+.IX Item "-mno-inline-strcmp"
+.PD
+Do or do not attempt to inline strcmp calls if possible.
+Inlining will only be done if the strings are properly aligned
+and instructions for accelerated processing are available.
+The default is to not inline strcmp calls.
+.IP \fB\-minline\-strncmp\fR 4
+.IX Item "-minline-strncmp"
+.PD 0
+.IP \fB\-mno\-inline\-strncmp\fR 4
+.IX Item "-mno-inline-strncmp"
+.PD
+Do or do not attempt to inline strncmp calls if possible.
+Inlining will only be done if the strings are properly aligned
+and instructions for accelerated processing are available.
+The default is to not inline strncmp calls.
 .IP \fB\-mshorten\-memrefs\fR 4
 .IX Item "-mshorten-memrefs"
 .PD 0
@@ -31711,23 +31945,15 @@ MOVDIR64B, CLDEMOTE, WAITPKG, ADCX, AVX, AVX2, BMI, BMI2, F16C, FMA, LZCNT,
 PCONFIG, PKU, VAES, VPCLMULQDQ, SERIALIZE, HRESET, KL, WIDEKL, AVX-VNNI,
 AVXIFMA, AVXVNNIINT8, AVXNECONVERT, CMPCCXADD, ENQCMD, UINTR and RAOINT
 instruction set support.
-.IP \fBarrowlake\fR 4
-.IX Item "arrowlake"
-Intel Arrow Lake CPU with 64\-bit extensions, MOVBE, MMX, SSE, SSE2, SSE3,
-SSSE3, SSE4.1, SSE4.2, POPCNT, AES, PREFETCHW, PCLMUL, RDRND, XSAVE, XSAVEC,
-XSAVES, XSAVEOPT, FSGSBASE, PTWRITE, RDPID, SGX, GFNI-SSE, CLWB, MOVDIRI,
-MOVDIR64B, CLDEMOTE, WAITPKG, ADCX, AVX, AVX2, BMI, BMI2, F16C, FMA, LZCNT,
-PCONFIG, PKU, VAES, VPCLMULQDQ, SERIALIZE, HRESET, KL, WIDEKL, AVX-VNNI,
-AVXIFMA, AVXVNNIINT8, AVXNECONVERT and CMPCCXADD instruction set support.
-.IP \fBarrowlake-s\fR 4
-.IX Item "arrowlake-s"
-Intel Arrow Lake S CPU with 64\-bit extensions, MOVBE, MMX, SSE, SSE2, SSE3,
-SSSE3, SSE4.1, SSE4.2, POPCNT, AES, PREFETCHW, PCLMUL, RDRND, XSAVE, XSAVEC,
-XSAVES, XSAVEOPT, FSGSBASE, PTWRITE, RDPID, SGX, GFNI-SSE, CLWB, MOVDIRI,
-MOVDIR64B, CLDEMOTE, WAITPKG, ADCX, AVX, AVX2, BMI, BMI2, F16C, FMA, LZCNT,
-PCONFIG, PKU, VAES, VPCLMULQDQ, SERIALIZE, HRESET, KL, WIDEKL, AVX-VNNI,
-AVXIFMA, AVXVNNIINT8, AVXNECONVERT, CMPCCXADD, AVXVNNIINT16, SHA512, SM3
-and SM4 instruction set support.
+.IP \fBclearwaterforest\fR 4
+.IX Item "clearwaterforest"
+Intel Clearwater Forest CPU with 64\-bit extensions, MOVBE, MMX, SSE, SSE2,
+SSE3, SSSE3, SSE4.1, SSE4.2, POPCNT, AES, PREFETCHW, PCLMUL, RDRND, XSAVE,
+XSAVEC, XSAVES, XSAVEOPT, FSGSBASE, PTWRITE, RDPID, SGX, GFNI-SSE, CLWB,
+MOVDIRI, MOVDIR64B, CLDEMOTE, WAITPKG, ADCX, AVX, AVX2, BMI, BMI2, F16C, FMA,
+LZCNT, PCONFIG, PKU, VAES, VPCLMULQDQ, SERIALIZE, HRESET, KL, WIDEKL, AVX-VNNI,
+ENQCMD, UINTR, AVXIFMA, AVXVNNIINT8, AVXNECONVERT, CMPCCXADD, AVXVNNIINT16,
+SHA512, SM3, SM4, USER_MSR and PREFETCHI instruction set support.
 .IP \fBknl\fR 4
 .IX Item "knl"
 Intel Knight's Landing CPU with 64\-bit extensions, MOVBE, MMX, SSE, SSE2, SSE3,
@@ -31845,6 +32071,33 @@ VPCLMULQDQ, AVX512BITALG, RDPID, AVX512VPOPCNTDQ, PCONFIG, WBNOINVD, CLWB,
 MOVDIRI, MOVDIR64B, ENQCMD, CLDEMOTE, PTWRITE, WAITPKG, SERIALIZE, TSXLDTRK,
 UINTR, AMX\-BF16, AMX-TILE, AMX\-INT8, AVX-VNNI, AVX512FP16, AVX512BF16, AMX\-FP16,
 PREFETCHI and AMX-COMPLEX instruction set support.
+.IP \fBarrowlake\fR 4
+.IX Item "arrowlake"
+Intel Arrow Lake CPU with 64\-bit extensions, MOVBE, MMX, SSE, SSE2, SSE3,
+SSSE3, SSE4.1, SSE4.2, POPCNT, AES, PREFETCHW, PCLMUL, RDRND, XSAVE, XSAVEC,
+XSAVES, XSAVEOPT, FSGSBASE, PTWRITE, RDPID, SGX, GFNI-SSE, CLWB, MOVDIRI,
+MOVDIR64B, CLDEMOTE, WAITPKG, ADCX, AVX, AVX2, BMI, BMI2, F16C, FMA, LZCNT,
+PCONFIG, PKU, VAES, VPCLMULQDQ, SERIALIZE, HRESET, KL, WIDEKL, AVX-VNNI,
+UINTR, AVXIFMA, AVXVNNIINT8, AVXNECONVERT and CMPCCXADD instruction set
+support.
+.IP \fBarrowlake-s\fR 4
+.IX Item "arrowlake-s"
+Intel Arrow Lake S CPU with 64\-bit extensions, MOVBE, MMX, SSE, SSE2, SSE3,
+SSSE3, SSE4.1, SSE4.2, POPCNT, AES, PREFETCHW, PCLMUL, RDRND, XSAVE, XSAVEC,
+XSAVES, XSAVEOPT, FSGSBASE, PTWRITE, RDPID, SGX, GFNI-SSE, CLWB, MOVDIRI,
+MOVDIR64B, CLDEMOTE, WAITPKG, ADCX, AVX, AVX2, BMI, BMI2, F16C, FMA, LZCNT,
+PCONFIG, PKU, VAES, VPCLMULQDQ, SERIALIZE, HRESET, KL, WIDEKL, AVX-VNNI,
+UINTR, AVXIFMA, AVXVNNIINT8, AVXNECONVERT, CMPCCXADD, AVXVNNIINT16, SHA512,
+SM3 and SM4 instruction set support.
+.IP \fBpantherlake\fR 4
+.IX Item "pantherlake"
+Intel Panther Lake CPU with 64\-bit extensions, MOVBE, MMX, SSE, SSE2, SSE3,
+SSSE3, SSE4.1, SSE4.2, POPCNT, AES, PREFETCHW, PCLMUL, RDRND, XSAVE, XSAVEC,
+XSAVES, XSAVEOPT, FSGSBASE, PTWRITE, RDPID, SGX, GFNI-SSE, CLWB, MOVDIRI,
+MOVDIR64B, CLDEMOTE, WAITPKG, ADCX, AVX, AVX2, BMI, BMI2, F16C, FMA, LZCNT,
+PCONFIG, PKU, VAES, VPCLMULQDQ, SERIALIZE, HRESET, KL, WIDEKL, AVX-VNNI,
+UINTR, AVXIFMA, AVXVNNIINT8, AVXNECONVERT, CMPCCXADD, AVXVNNIINT16, SHA512,
+SM3, SM4 and PREFETCHI instruction set support.
 .IP \fBk6\fR 4
 .IX Item "k6"
 AMD K6 CPU with MMX instruction set support.
@@ -32300,9 +32553,9 @@ psABI, and \fBcacheline\fR uses increased alignment value to match
 the cache line size.  \fBcompat\fR is the default.
 .IP \fB\-mlarge\-data\-threshold=\fR\fIthreshold\fR 4
 .IX Item "-mlarge-data-threshold=threshold"
-When \fB\-mcmodel=medium\fR is specified, data objects larger than
-\&\fIthreshold\fR are placed in the large data section.  This value must be the
-same across all objects linked into the binary, and defaults to 65535.
+When \fB\-mcmodel=medium\fR or \fB\-mcmodel=large\fR is specified, data
+objects larger than \fIthreshold\fR are placed in large data sections.  The
+default is 65535.
 .IP \fB\-mrtd\fR 4
 .IX Item "-mrtd"
 Use a different function-calling convention, in which functions that
@@ -32636,6 +32889,10 @@ preferred alignment to \fB\-mpreferred\-stack\-boundary=2\fR.
 .IX Item "-msha512"
 .IP \fB\-msm4\fR 4
 .IX Item "-msm4"
+.IP \fB\-mapxf\fR 4
+.IX Item "-mapxf"
+.IP \fB\-musermsr\fR 4
+.IX Item "-musermsr"
 .PD
 These switches enable the use of instructions in the MMX, SSE,
 AVX512ER, AVX512CD, AVX512VL, AVX512BW, AVX512DQ, AVX512IFMA, AVX512VBMI, SHA,
@@ -32647,9 +32904,9 @@ GFNI, VAES, WAITPKG, VPCLMULQDQ, AVX512BITALG, MOVDIRI, MOVDIR64B, AVX512BF16,
 ENQCMD, AVX512VPOPCNTDQ, AVX5124FMAPS, AVX512VNNI, AVX5124VNNIW, SERIALIZE,
 UINTR, HRESET, AMXTILE, AMXINT8, AMXBF16, KL, WIDEKL, AVXVNNI, AVX512\-FP16,
 AVXIFMA, AVXVNNIINT8, AVXNECONVERT, CMPCCXADD, AMX\-FP16, PREFETCHI, RAOINT,
-AMX-COMPLEX, AVXVNNIINT16, SM3, SHA512, SM4 or CLDEMOTE extended instruction
-sets. Each has a corresponding \fB\-mno\-\fR option to disable use of these
-instructions.
+AMX-COMPLEX, AVXVNNIINT16, SM3, SHA512, SM4, APX_F, USER_MSR or CLDEMOTE
+extended instruction sets.  Each has a corresponding \fB\-mno\-\fR option
+to disable use of these instructions.
 .Sp
 These extensions are also available as built-in functions: see
 \&\fBx86 Built-in Functions\fR, for details of the functions enabled and

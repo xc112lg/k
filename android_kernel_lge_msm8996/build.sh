@@ -68,7 +68,6 @@
 ################################# CONFIG #################################
 
 # Assume build_all is not being used, will be automatically changed if it is
-echo -j$(nproc --all)
 SINGLEBUILD="yes"
 
 # root directory of this kernel (this script's location)
@@ -91,7 +90,7 @@ KBUSER=stendro_+_AShiningRay
 KBHOST=github
 
 # ccache: yes or no
-USE_CCACHE=no
+USE_CCACHE=yes
 
 # select cpu threads
 THREADS=$(grep -c "processor" /proc/cpuinfo)
@@ -99,9 +98,10 @@ THREADS=$(grep -c "processor" /proc/cpuinfo)
 # directory containing cross-compiler
 # a newer toolchain (gcc8+) is recommended due to changes made
 # to the kernel.
-GCC_COMP=../toolchains/aarch64-elf/bin/aarch64-elf-
+cp -r  toolchains $HOME/toolchains
+GCC_COMP=$HOME/toolchains/aarch64-elf/bin/aarch64-elf-
 # directory containing 32bit cross-compiler for CONFIG_COMPAT_VDSO
-GCC_COMP_32=../toolchains/arm-eabi/bin/arm-eabi-
+GCC_COMP_32=$HOME/toolchains/arm-eabi/bin/arm-eabi-
 
 # -------------------------------- END -----------------------------------
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -312,21 +312,7 @@ fi
 # ask before cleaning if device
 # is the same as previous build
 if [ $SINGLEBUILD = "yes" ]; then
-#     if [ "$ASK_CLEAN" = "yes" ]; then
-#       while true; do
-#         echo -e $COLOR_Y
-#         read -p "Same device as the last build. Do you wish to clean the build directory?" yn
-#         echo -e $COLOR_N
-#         case $yn in
-#           [Yy]* ) CLEAN_BUILD && break ;;
-#           [Nn]* ) break ;;
-#           * ) echo -e $COLOR_R"Please answer 'y' or 'n'"$COLOR_N ;;
-#         esac
-#       done
-#     else
-#     CLEAN_BUILD
-#     fi
-# else # Always clean build folder for next build on build_all
+
     CLEAN_BUILD
 fi
 SETUP_BUILD
@@ -336,5 +322,9 @@ PREPARE_NEXT
 echo -e $COLOR_G"Finished building ${DEVICE} ${VER} -- Kernel compilation took"$COLOR_R $BTIME
 
 if [ $SINGLEBUILD = "yes" ]; then
+rm out/H872_v0.1-BETA11-Swan2000.zip
+adb shell rm -f sdcard/H872_v0.1-BETA11-Swan2000.zip
     echo -e $COLOR_P"Run './copy_finished.sh' to create the flashable AnyKernel zip."
+    ./copy_finished.sh
+    adb push out/H872_v0.1-BETA11-Swan2000.zip sdcard
 fi

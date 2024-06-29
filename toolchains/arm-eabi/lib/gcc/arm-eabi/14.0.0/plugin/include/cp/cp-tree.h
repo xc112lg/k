@@ -4784,6 +4784,11 @@ get_vec_init_expr (tree t)
 #define PTRMEM_OK_P(NODE) \
   TREE_LANG_FLAG_0 (TREE_CHECK3 ((NODE), ADDR_EXPR, OFFSET_REF, SCOPE_REF))
 
+/* True if this ADDR_EXPR denotes a function call; that is, it's
+   fn() rather than &fn.  */
+#define ADDR_EXPR_DENOTES_CALL_P(NODE) \
+  (ADDR_EXPR_CHECK(NODE)->base.protected_flag)
+
 /* Get the POINTER_TYPE to the METHOD_TYPE associated with this
    pointer to member function.  TYPE_PTRMEMFUNC_P _must_ be true,
    before using this macro.  */
@@ -4964,12 +4969,14 @@ get_vec_init_expr (tree t)
 /* The DECL_TEMPLATE_PARMS are a list.  The TREE_PURPOSE of each node
    is a INT_CST whose TREE_INT_CST_LOW indicates the level of the
    template parameters, with 1 being the outermost set of template
-   parameters.  The TREE_VALUE is a vector, whose elements are the
+   parameters.  The TREE_TYPE is TEMPLATE_PARMS_CONSTRAINTS.
+   The TREE_VALUE is a vector, whose elements are the
    template parameters at each level.  Each element in the vector is a
    TREE_LIST, whose TREE_VALUE is a PARM_DECL (if the parameter is a
    non-type parameter), or a TYPE_DECL (if the parameter is a type
    parameter) or a TEMPLATE_DECL (if the parameter is a template
-   parameter).  The TREE_PURPOSE is the default value, if any.  The
+   parameter).  The TREE_PURPOSE is the default value, if any.
+   The TREE_TYPE is TEMPLATE_PARM_CONSTRAINTS.  The
    TEMPLATE_PARM_INDEX for the parameter is available as the
    DECL_INITIAL (for a PARM_DECL) or as the TREE_TYPE (for a
    TYPE_DECL).
@@ -5614,6 +5621,9 @@ enum tsubst_flags {
   tf_qualifying_scope = 1 << 14, /* Substituting the LHS of the :: operator.
 				    Affects TYPENAME_TYPE resolution from
 				    make_typename_type.  */
+  tf_no_name_lookup = 1 << 15, /* Don't look up the terminal name of an
+				  outermost id-expression, or resolve its
+				  constituent template-ids or qualified-ids.  */
   /* Convenient substitution flags combinations.  */
   tf_warning_or_error = tf_warning | tf_error
 };
@@ -6580,6 +6590,24 @@ extern int class_dump_id;
 extern int module_dump_id;
 extern int raw_dump_id;
 
+/* Whether the current context is manifestly constant-evaluated.
+   Used by the constexpr machinery to control folding of
+   __builtin_is_constant_evaluated.  */
+
+enum class mce_value
+{
+  /* Unknown, so treat __builtin_is_constant_evaluated as non-constant.  */
+  mce_unknown = 0,
+  /* Fold it to true.  */
+  mce_true = 1,
+  /* Fold it to false.  Primarily used during cp_fold_function and
+     cp_fully_fold_init.  */
+  mce_false = -1,
+};
+constexpr mce_value mce_unknown = mce_value::mce_unknown;
+constexpr mce_value mce_true = mce_value::mce_true;
+constexpr mce_value mce_false = mce_value::mce_false;
+
 /* in call.cc */
 extern bool check_dtor_name			(tree, tree);
 int magic_varargs_p				(tree);
@@ -6792,6 +6820,7 @@ extern bool trivial_default_constructor_is_constexpr (tree);
 extern bool type_has_constexpr_default_constructor (tree);
 extern bool type_has_constexpr_destructor	(tree);
 extern bool type_has_virtual_destructor		(tree);
+extern bool type_has_non_deleted_trivial_default_ctor (tree);
 extern bool classtype_has_move_assign_or_move_ctor_p (tree, bool user_declared);
 extern bool classtype_has_non_deleted_move_ctor (tree);
 extern tree classtype_has_depr_implicit_copy	(tree);
@@ -7035,6 +7064,7 @@ extern int parm_index                           (tree);
 extern tree vtv_start_verification_constructor_init_function (void);
 extern tree vtv_finish_verification_constructor_init_function (tree);
 extern void cp_check_const_attributes (tree);
+extern void maybe_propagate_warmth_attributes (tree, tree);
 
 /* in error.cc */
 extern const char *type_as_string		(tree, int);
@@ -7317,6 +7347,7 @@ extern tree cp_convert_range_for (tree, tree, tree, cp_decomp *, bool,
 extern void cp_convert_omp_range_for (tree &, tree &, tree &,
 				      tree &, tree &, tree &, tree &, tree &);
 extern void cp_finish_omp_range_for (tree, tree);
+extern bool cp_maybe_parse_omp_decl (tree, tree);
 extern bool parsing_nsdmi (void);
 extern bool parsing_function_declarator ();
 extern bool parsing_default_capturing_generic_lambda_in_template (void);
@@ -7430,7 +7461,6 @@ extern void instantiate_pending_templates	(int);
 extern tree tsubst_default_argument		(tree, int, tree, tree,
 						 tsubst_flags_t);
 extern tree tsubst (tree, tree, tsubst_flags_t, tree);
-extern tree tsubst_copy_and_build		(tree, tree, tsubst_flags_t, tree);
 extern tree tsubst_expr                         (tree, tree, tsubst_flags_t, tree);
 extern tree tsubst_pack_expansion		(tree, tree, tsubst_flags_t, tree);
 extern tree tsubst_argument_pack		(tree, tree, tsubst_flags_t, tree);
@@ -7463,8 +7493,6 @@ extern bool any_value_dependent_elements_p      (const_tree);
 extern bool dependent_omp_for_p			(tree, tree, tree, tree);
 extern tree resolve_typename_type		(tree, bool);
 extern tree template_for_substitution		(tree);
-extern tree build_non_dependent_expr		(tree);
-extern void make_args_non_dependent		(vec<tree, va_gc> *);
 extern bool reregister_specialization		(tree, tree, tree);
 extern tree instantiate_non_dependent_expr	(tree, tsubst_flags_t = tf_error);
 extern tree instantiate_non_dependent_expr_internal (tree, tsubst_flags_t);
@@ -7847,6 +7875,7 @@ extern tree lambda_regenerating_args		(tree);
 extern tree most_general_lambda			(tree);
 extern tree finish_omp_target			(location_t, tree, tree, bool);
 extern void finish_omp_target_clauses		(location_t, tree, tree *);
+extern void maybe_warn_unparenthesized_assignment (tree, tsubst_flags_t);
 
 /* in tree.cc */
 extern int cp_tree_operand_length		(const_tree);
@@ -8184,9 +8213,9 @@ extern void maybe_warn_about_useless_cast       (location_t, tree, tree,
 						 tsubst_flags_t);
 extern tree cp_perform_integral_promotions      (tree, tsubst_flags_t);
 
-extern tree finish_left_unary_fold_expr      (tree, int);
-extern tree finish_right_unary_fold_expr     (tree, int);
-extern tree finish_binary_fold_expr          (tree, tree, int);
+extern tree finish_left_unary_fold_expr      (location_t, tree, int);
+extern tree finish_right_unary_fold_expr     (location_t, tree, int);
+extern tree finish_binary_fold_expr          (location_t, tree, tree, int);
 extern tree treat_lvalue_as_rvalue_p	     (tree, bool);
 extern bool decl_in_std_namespace_p	     (tree);
 extern void maybe_warn_pessimizing_move	     (tree, tree, bool);
@@ -8354,6 +8383,7 @@ extern tree process_stmt_assume_attribute	(tree, tree, location_t);
 extern bool simple_empty_class_p		(tree, tree, tree_code);
 extern tree fold_builtin_source_location	(const_tree);
 extern tree get_source_location_impl_type	();
+extern bool cp_fold_immediate			(tree *, mce_value);
 
 /* in name-lookup.cc */
 extern tree strip_using_decl                    (tree);
@@ -8514,24 +8544,6 @@ struct GTY((for_user)) constexpr_fundef {
   tree parms;
   tree result;
 };
-
-/* Whether the current context is manifestly constant-evaluated.
-   Used by the constexpr machinery to control folding of
-   __builtin_is_constant_evaluated.  */
-
-enum class mce_value
-{
-  /* Unknown, so treat __builtin_is_constant_evaluated as non-constant.  */
-  mce_unknown = 0,
-  /* Fold it to true.  */
-  mce_true = 1,
-  /* Fold it to false.  Primarily used during cp_fold_function and
-     cp_fully_fold_init.  */
-  mce_false = -1,
-};
-constexpr mce_value mce_unknown = mce_value::mce_unknown;
-constexpr mce_value mce_true = mce_value::mce_true;
-constexpr mce_value mce_false = mce_value::mce_false;
 
 extern void fini_constexpr			(void);
 extern bool literal_type_p                      (tree);

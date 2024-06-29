@@ -1,0 +1,2 @@
+kernel/drivers/net/wireless/bcmdhd_ext/bcmdhd.ko
+kernel/drivers/net/wireless/cnss_prealloc/cnss_prealloc.ko
