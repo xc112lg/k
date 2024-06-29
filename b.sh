@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo $(nproc --all)
+echo $\(\nproc --all\)
