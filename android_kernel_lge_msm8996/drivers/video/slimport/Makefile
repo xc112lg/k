@@ -1,0 +1,1 @@
+obj-$(CONFIG_SLIMPORT_CTYPE)	+= Ctype_anx7816/
