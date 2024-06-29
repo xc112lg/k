@@ -327,9 +327,9 @@ PREPARE_NEXT
 echo -e $COLOR_G"Finished building ${DEVICE} ${VER} -- Kernel compilation took"$COLOR_R $BTIME
 
 if [ $SINGLEBUILD = "yes" ]; then
-rm out/H872_v0.1-BETA11-Swan2000.zip
-adb shell rm -f sdcard/H872_v0.1-BETA11-Swan2000.zip
+#rm out/H872_v0.1-BETA11-Swan2000.zip
+#adb shell rm -f sdcard/H872_v0.1-BETA11-Swan2000.zip
     echo -e $COLOR_P"Run './copy_finished.sh' to create the flashable AnyKernel zip."
     ./copy_finished.sh
-    adb push out/H872_v0.1-BETA11-Swan2000.zip sdcard
+ #   adb push out/H872_v0.1-BETA11-Swan2000.zip sdcard
 fi
