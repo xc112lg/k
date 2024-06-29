@@ -25,7 +25,8 @@ if ! check_libdebuginfod; then
         echo "Attempting to download and build elfutils from source..."
 
         # Install necessary build dependencies
-        sudo apt-get install -y build-essential autoconf automake libtool pkg-config wget bzip2
+        sudo apt-get install -y build-essential autoconf automake libtool pkg-config wget bzip2 \
+            libcurl4-openssl-dev libdw-dev libmicrohttpd-dev
 
         # Download and build elfutils from source
         ELFUTILS_VERSION="0.186"
@@ -100,6 +101,7 @@ else
 fi
 
 echo "All steps completed successfully."
+
 
 
 
