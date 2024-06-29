@@ -51,7 +51,7 @@ if ! ldconfig -p | grep -q libdebuginfod.so.1; then
 
         # Extract directory from the lib
 
-# cd k
-# cd android_kernel_lge_msm8996
-# chmod +x build.sh
-# ./build.sh H872
+cd k
+cd android_kernel_lge_msm8996
+chmod +x build.sh
+./build.sh H872
