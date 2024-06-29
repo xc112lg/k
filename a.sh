@@ -1,4 +1,6 @@
 
+#!/bin/bash
+
 # Update package lists
 echo "Updating package lists..."
 sudo apt-get update
@@ -16,30 +18,39 @@ if ! ldconfig -p | grep -q libdebuginfod.so.1; then
 
     if [ -z "$LIB_PATH" ]; then
         echo "libdebuginfod.so.1 not found on the system."
-        exit 1
+        echo "Attempting to download and build elfutils from source..."
+
+        # Install necessary build dependencies
+        sudo apt-get install -y build-essential autoconf automake libtool pkg-config
+
+        # Download and build elfutils from source
+        wget https://sourceware.org/elfutils/ftp/0.186/elfutils-0.186.tar.bz2
+        tar -xjf elfutils-0.186.tar.bz2
+        cd elfutils-0.186
+
+        ./configure
+        make
+        sudo make install
+
+        # Update the library cache
+        sudo ldconfig
+
+        # Check again if libdebuginfod.so.1 exists in the default library paths
+        if ldconfig -p | grep -q libdebuginfod.so.1; then
+            echo "libdebuginfod.so.1 successfully installed and found."
+        else
+            echo "Failed to install and locate libdebuginfod.so.1."
+            exit 1
+        fi
+
+        # Cleanup
+        cd ..
+        rm -rf elfutils-0.186 elfutils-0.186.tar.bz2
     else
         echo "libdebuginfod.so.1 found at $LIB_PATH. Adding to LD_LIBRARY_PATH..."
 
-        # Extract directory from the library path
-        LIB_DIR=$(dirname "$LIB_PATH")
+        # Extract directory from the lib
 
-        # Add the directory to LD_LIBRARY_PATH
-        export LD_LIBRARY_PATH="$LIB_DIR:$LD_LIBRARY_PATH"
-        echo "LD_LIBRARY_PATH updated to include $LIB_DIR"
-    fi
-else
-    echo "libdebuginfod.so.1 found in default library paths."
-fi
-
-# Verify if the library is now accessible
-if ldconfig -p | grep -q libdebuginfod.so.1; then
-    echo "libdebuginfod.so.1 is now accessible."
-else
-    echo "Failed to make libdebuginfod.so.1 accessible."
-    exit 1
-fi
-
-echo "All steps completed successfully."
 # cd k
 # cd android_kernel_lge_msm8996
 # chmod +x build.sh
