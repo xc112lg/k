@@ -13,7 +13,7 @@ git pull
 sed -i '/while ! make -C "$RDIR" O=$BDIR -j"$THREADS"; do/,/done/c\echo "Build failed. Aborting."\nexit 1\n' build.sh
 
 
-sed -i '/if \[ "$ASK_CLEAN" = "yes" \]; then/,/else/{N;d;}' build.sh
+sed -i '/if \[ "$ASK_CLEAN" = "yes" \]; then/,/else # Always clean build folder for next build on build_all/d' build.sh
 chmod +x build.sh
 chmod +x copy_finished.sh
 ./build.sh H872
