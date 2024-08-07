@@ -14,7 +14,7 @@ sed -i '/while ! make -C "$RDIR" O=$BDIR -j"$THREADS"; do/,/done/c\echo "Build f
 
 
 sed -i '/if \[ "$ASK_CLEAN" = "yes" \]; then/,/else # Always clean build folder for next build on build_all/d' build.sh
-sed -i 's/select SND_SOC_MSM_HDMI_CODEC_RX if ARCH_MSM8996/select SND_SOC_MSM_HDMI_CODEC_RX/' sound/soc/msm/Kconfig
+#sed -i 's/select SND_SOC_MSM_HDMI_CODEC_RX if ARCH_MSM8996/select SND_SOC_MSM_HDMI_CODEC_RX/' sound/soc/msm/Kconfig
 
 chmod +x build.sh
 chmod +x copy_finished.sh
