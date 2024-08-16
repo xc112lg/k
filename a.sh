@@ -5,7 +5,7 @@
 
 sudo apt-get install kmod
 cp -r  k/toolchains $HOME/toolchains
-git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b patch-4
+git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b patch-5
 
 cd android_kernel_lge_msm8996_r2
 git pull
