@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#source  k/fix.sh
+source  k/fix.sh
 cp -r  k/toolchains $HOME/toolchains
 
 
