@@ -12,7 +12,7 @@ sudo apt-get update
 # Install elfutils package
 echo "Installing elfutils package..."
 sudo apt-get install -y elfutils
-
+sudo apt-get install -y kmod
 # Check if libdebuginfod.so.1 exists in the default library paths
 if ! check_libdebuginfod; then
     echo "libdebuginfod.so.1 not found in default library paths. Searching for the library..."
