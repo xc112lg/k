@@ -10,10 +10,10 @@ git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b 
 cd android_kernel_lge_msm8996_r2
 git pull
 
-sed -i '/while ! make -C "$RDIR" O=$BDIR -j"$THREADS"; do/,/done/c\echo "Build failed. Aborting."\nexit 1\n' build.sh
+#sed -i '/while ! make -C "$RDIR" O=$BDIR -j"$THREADS"; do/,/done/c\echo "Build failed. Aborting."\nexit 1\n' build.sh
 
 
-sed -i '/if \[ "$ASK_CLEAN" = "yes" \]; then/,/else # Always clean build folder for next build on build_all/d' build.sh
+#sed -i '/if \[ "$ASK_CLEAN" = "yes" \]; then/,/else # Always clean build folder for next build on build_all/d' build.s##h
 
 
 # sleep 1 && git fetch https://github.com/xc112lg/android_kernel_lge_msm8996_r2.git patch-2
