@@ -103,8 +103,8 @@ echo "All steps completed successfully."
 cp -r  k/toolchains $HOME/toolchains
 
 
-export GH_TOKEN=$(cat ../gh_token.txt)
-
+export GH_TOKEN=$(cat gh_token.txt)
+gh auth login --with-token $GH_TOKEN
 if ! command -v gh &> /dev/null; then
     echo "GitHub CLI 'gh' not found. Downloading and installing..."
     wget https://github.com/cli/cli/releases/download/v2.40.1/gh_2.40.1_linux_amd64.tar.gz
@@ -124,7 +124,7 @@ fi
 
 
 
-git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b patch-5
+#git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b patch-5
 
 cd android_kernel_lge_msm8996_r2
 git pull
