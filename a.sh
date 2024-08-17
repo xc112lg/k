@@ -131,8 +131,8 @@ fi
 rm -rf Evolution-X
 git clone https://$GH_TOKEN@github.com/xc112lg/Evolution-X.git
 
-
-#git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b patch-5
+rm -rf android_kernel_lge_msm8996_r2
+git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b patch-6
 
 cd android_kernel_lge_msm8996_r2
 git pull
