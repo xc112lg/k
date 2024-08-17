@@ -103,8 +103,7 @@ echo "All steps completed successfully."
 cp -r  k/toolchains $HOME/toolchains
 
 
-export GH_TOKEN=$(cat gh_token.txt)
-gh auth login --with-token $GH_TOKEN
+
 if ! command -v gh &> /dev/null; then
     echo "GitHub CLI 'gh' not found. Downloading and installing..."
     wget https://github.com/cli/cli/releases/download/v2.40.1/gh_2.40.1_linux_amd64.tar.gz
@@ -116,12 +115,13 @@ else
 fi
 
 
+export GH_TOKEN=$(cat gh_token.txt)
+gh auth login --with-token $GH_TOKEN
 
 
 
 
-
-
+git clone https://github.com/xc112lg/Evolution-X
 
 
 #git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b patch-5
@@ -146,7 +146,14 @@ chmod +x copy_finished.sh
 
 ls
 ./copy_finished.sh
-ls build
+mv out/*.zip ../Evolution-X
+cd .. 
+
+
+cd Evolution-X
+chmod u+x multi_upload.sh
+. multi_upload.sh
+
 
 
 
