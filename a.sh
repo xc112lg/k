@@ -59,6 +59,12 @@ ls
 mv out/*.zip ../Evolution-X
 cd .. 
 
+source_folder="Evolution-X"
+if [ -z "$(find "$source_folder" -type f \( -name "*.zip" -o -name "*.img" \))" ]; then
+    echo "No .zip or .img files found in $source_folder or its subdirectories. Exiting."
+    exit 1
+fi
+
 
 cd Evolution-X
 chmod u+x multi_upload.sh
