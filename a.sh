@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo $PWD
+
 source  k/fix.sh
 cp -r  k/toolchains $HOME/toolchains
 
@@ -37,6 +37,7 @@ fi
 #git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b patch-6
 
 cd android_kernel_lge_msm8996_r2
+rm arch/arm64/configs/lge_msm8996_defconfig
 wget -N -P arch/arm64/configs/ https://raw.githubusercontent.com/xc112lg/android_kernel_lge_msm8996_r2/patch-6/arch/arm64/configs/lge_msm8996_defconfig
 #git pull origin patch-6
 
@@ -55,7 +56,7 @@ chmod +x build.sh
 chmod +x copy_finished.sh
 ./build.sh H872
 
-ls
+
 ./copy_finished.sh
 mv out/*.zip ../Evolution-X
 cd .. 
