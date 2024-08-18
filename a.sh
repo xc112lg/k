@@ -58,6 +58,7 @@ chmod +x copy_finished.sh
 
 
 ./copy_finished.sh
+rm Evolution-X/*.zip
 mv out/*.zip ../Evolution-X
 cd .. 
 
