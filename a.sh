@@ -32,7 +32,7 @@ fi
 
 #rm -rf Evolution-X
 #git clone https://$GH_TOKEN@github.com/xc112lg/Evolution-X.git
-
+rm Evolution-X/*.zip
 rm -rf android_kernel_lge_msm8996_r2
 git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b patch-6
 
@@ -58,7 +58,7 @@ chmod +x copy_finished.sh
 
 
 ./copy_finished.sh
-rm Evolution-X/*.zip
+
 mv out/*.zip ../Evolution-X
 cd .. 
 
