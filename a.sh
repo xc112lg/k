@@ -35,9 +35,9 @@ fi
 
 rm Evolution-X/*.zip
 rm -rf android_kernel_lge_msm8996_r2
-# git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b patch-6
+git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b patch-7
 
-git clone https://github.com/LGE-G5-G6-V20/android_kernel_lge_msm8996_r2  --depth 1 -b swan2000-los21
+#git clone https://github.com/LGE-G5-G6-V20/android_kernel_lge_msm8996_r2  --depth 1 -b swan2000-los21
 
 cd android_kernel_lge_msm8996_r2
 #rm arch/arm64/configs/lge_msm8996_defconfig
