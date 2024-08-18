@@ -39,7 +39,7 @@ fi
 cd android_kernel_lge_msm8996_r2
         git reset --hard
 	git clean -fdx
-git pull
+git pull origin patch-6
 
 #sed -i '/while ! make -C "$RDIR" O=$BDIR -j"$THREADS"; do/,/done/c\echo "Build failed. Aborting."\nexit 1\n' build.sh
 
