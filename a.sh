@@ -46,7 +46,9 @@ cd android_kernel_lge_msm8996_r2
 
 #sed -i '/while ! make -C "$RDIR" O=$BDIR -j"$THREADS"; do/,/done/c\echo "Build failed. Aborting."\nexit 1\n' build.sh
 
-sed -i '/read -rp "Build failed. Retry? "/,+3c\ABORT "Compilation aborted."' build.sh
+sed -i '/while ! make -C "$RDIR" O=$BDIR -j"$THREADS"; do/,/done/c\while ! make -C "$RDIR" O=$BDIR -j"$THREADS"; do\n    ABORT "Compilation aborted."\ndone' build.sh
+
+#sed -i '/read -rp "Build failed. Retry? "/,+3c\ABORT "Compilation aborted."' build.sh
 
 sed -i '/if \[ "$ASK_CLEAN" = "yes" \]; then/,/else # Always clean build folder for next build on build_all/d' build.sh
 
