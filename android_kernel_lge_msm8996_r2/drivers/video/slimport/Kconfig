@@ -1,0 +1,15 @@
+source "drivers/video/slimport/Ctype_anx7816/Kconfig"
+
+config DEBUG_SLIMPORT
+	bool "Debug slimport calls"
+	depends on DEBUG_KERNEL
+	help
+	  Say Y here to add some extra checks and diagnostics to
+	  slimport drivers. These checks help ensure that the
+	  slimport usb video drivers are functioning properly.
+
+config SLIMPORT_COMMON
+	tristate "Analogix Slimport transmitter ANX support"
+	help
+	  Slimport Transmitter is a video transmitter chip
+	  over micro-USB connector for smartphone device.

@@ -1,0 +1,3 @@
+ccflags-$(CONFIG_DEBUG_SLIMPORT)	+= -DDEBUG
+
+obj-$(CONFIG_SLIMPORT_CTYPE)	+= Ctype_anx7816/
