@@ -36,7 +36,7 @@ fi
 git clone https://$GH_TOKEN@github.com/xc112lg/Evolution-X.git
 rm Evolution-X/*.zip
 rm -rf android_kernel_lge_msm8996_r2
-git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b patch-7
+git clone https://github.com/xc112lg/android_kernel_lge_msm8996_r2 --depth 1 -b patch-1
 
 cd android_kernel_lge_msm8996_r2
 #rm arch/arm64/configs/vendor/lge/lge_msm8996_defconfig
